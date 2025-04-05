@@ -19,7 +19,7 @@ public interface TournamentService {
     //Top Winner
     List<TournamentWinner> getTopWinners(String sportName);
     //All list Based on Gender
-    List<TournamentWinner> getWinnerByGender(String gender);
+    List<TournamentWinner> getTournamentWinnersByGender(String gender);
 
     //Update Operation
     TournamentWinner updateStudent(Long tournamentId, TournamentWinner tournamentWinner);
@@ -32,6 +32,4 @@ public interface TournamentService {
 
     //exist by ID
     boolean existById(Long tournamentId);
-
-    List<TournamentWinner> getTournamentsByGender(String gender);
 }

@@ -25,7 +25,7 @@ public class TournamentApiController {
     @GetMapping("/by-gender/{gender}")
     public ResponseEntity<List<TournamentWinner>> getTournamentsByGender(@PathVariable String gender) {
         log.info("Fetching tournaments for gender: {}", gender);
-        List<TournamentWinner> tournamentWinners = tournamentService.getTournamentsByGender(gender);
+        List<TournamentWinner> tournamentWinners = tournamentService.getTournamentWinnersByGender(gender);
 
         if (tournamentWinners.isEmpty()) {
             log.warn("No tournaments found for gender: {}", gender);

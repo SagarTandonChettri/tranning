@@ -11,7 +11,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class TournamentGenderApiResponse {
+public class TournamentGenderResponse {
     private List<TournamentWinner> maleWinner;
     private List<TournamentWinner> femaleWinner;
 }

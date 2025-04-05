@@ -13,7 +13,7 @@ import java.util.List;
 public class TournamentWinnerResponse {
     private List<TournamentWinner> cricketWinner;
     private List<TournamentWinner> footballWinner;
-    private List<TournamentWinner> tennisWinner;
-    private List<TournamentWinner> hockeyWinner;
-    private List<TournamentWinner> vollyBallWinner;
+    private List<TournamentWinner> badmintonWinner;
+    private List<TournamentWinner> swimmingWinner;
+    private List<TournamentWinner> kabaddiWinner;
 }

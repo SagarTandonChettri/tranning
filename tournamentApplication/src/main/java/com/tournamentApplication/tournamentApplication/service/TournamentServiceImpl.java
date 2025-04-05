@@ -16,12 +16,14 @@ public class TournamentServiceImpl implements TournamentService{
     @Autowired
     private TournamentRepository tournamentRepository;
 
+    //POST Service
     @Override
     public TournamentWinner saveStudent(TournamentWinner tournamentWinner) {
         log.info("Received Request for saveTournament: {}", tournamentWinner);
         return tournamentRepository.save(tournamentWinner);
     }
 
+    //GET Service
     @Override
     public List<TournamentWinner> fetchStudentList() {
         log.info("Received Fetching Request getTournametList");
@@ -68,12 +70,12 @@ public class TournamentServiceImpl implements TournamentService{
     }
 
     @Override
-    public List<TournamentWinner> getWinnerByGender(String gender) {
-        log.info("Received Request to get Student by Gender");
-
-        return List.of();
+    public List<TournamentWinner> getTournamentWinnersByGender(String gender) {
+        log.info("GET Request getTournamentsByGender: {}",gender);
+        return tournamentRepository.findByGender(gender);
     }
 
+    //Put Service
     @Override
     public TournamentWinner updateStudent(Long tournamentId, TournamentWinner newTournamentWinner) {
         log.info("Received Request to update tournament \n updateTournamentINFO[tournamentId: {},updatedTournament: {}], ",tournamentId, newTournamentWinner);
@@ -94,6 +96,8 @@ public class TournamentServiceImpl implements TournamentService{
         return tournamentRepository.save(newTournamentWinner);
     }
 
+
+    //DEl Service
     @Override
     public boolean deleteTournamentById(Long tournamentId) {
         log.info("Received Request for DELETE tournament tournamentId: {}",tournamentId);
@@ -116,13 +120,9 @@ public class TournamentServiceImpl implements TournamentService{
         return true;
     }
 
+    //ID EXIST
     @Override
     public boolean existById(Long tournamentId) {
         return tournamentRepository.existsById(tournamentId);
-    }
-
-    @Override
-    public List<TournamentWinner> getTournamentsByGender(String gender) {
-        return tournamentRepository.findByGender(gender);
     }
 }

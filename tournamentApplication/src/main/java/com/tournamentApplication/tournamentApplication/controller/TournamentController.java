@@ -1,11 +1,13 @@
 package com.tournamentApplication.tournamentApplication.controller;
 
 import com.tournamentApplication.tournamentApplication.dto.TournamentApiResponse;
+import com.tournamentApplication.tournamentApplication.dto.TournamentGenderResponse;
 import com.tournamentApplication.tournamentApplication.dto.TournamentWinnerResponse;
 import com.tournamentApplication.tournamentApplication.entity.TournamentWinner;
 import com.tournamentApplication.tournamentApplication.service.TournamentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -87,19 +89,19 @@ public class TournamentController {
 
         List<TournamentWinner> cricketTournamentWinner = tournamentService.getTournamentBySportName("cricket");
         List<TournamentWinner> footballTournamentWinner = tournamentService.getTournamentBySportName("football");
-        List<TournamentWinner> tennisTournamentWinner = tournamentService.getTournamentBySportName("tennis");
-        List<TournamentWinner> hockeyTournamentWinner = tournamentService.getTournamentBySportName("hockey");
-        List<TournamentWinner> volleyballTournamentWinner = tournamentService.getTournamentBySportName("volleyball");
+        List<TournamentWinner> badmintonTournamentWinner = tournamentService.getTournamentBySportName("badminton");
+        List<TournamentWinner> swimmingTournamentWinner = tournamentService.getTournamentBySportName("swimming");
+        List<TournamentWinner> kabaddiTournamentWinner = tournamentService.getTournamentBySportName("kabaddi");
 
         log.info("Received Tournament List: {}", cricketTournamentWinner);
         log.info("Received Tournament List: {}", footballTournamentWinner);
-        log.info("Received Tournament List: {}", tennisTournamentWinner);
-        log.info("Received Tournament List: {}", hockeyTournamentWinner);
-        log.info("Received Tournament List: {}", volleyballTournamentWinner);
+        log.info("Received Tournament List: {}", badmintonTournamentWinner);
+        log.info("Received Tournament List: {}", swimmingTournamentWinner);
+        log.info("Received Tournament List: {}", kabaddiTournamentWinner);
 
-        TournamentWinnerResponse sportNameWinnerResponse = new TournamentWinnerResponse(cricketTournamentWinner, footballTournamentWinner, tennisTournamentWinner, hockeyTournamentWinner, volleyballTournamentWinner);
+        TournamentWinnerResponse sportNameWinnerResponse = new TournamentWinnerResponse(cricketTournamentWinner, footballTournamentWinner, badmintonTournamentWinner, swimmingTournamentWinner, kabaddiTournamentWinner);
 
-        if(cricketTournamentWinner.isEmpty() && footballTournamentWinner.isEmpty() && tennisTournamentWinner.isEmpty() && hockeyTournamentWinner.isEmpty() && volleyballTournamentWinner.isEmpty()) {
+        if(cricketTournamentWinner.isEmpty() && footballTournamentWinner.isEmpty() && badmintonTournamentWinner.isEmpty() && kabaddiTournamentWinner.isEmpty() && swimmingTournamentWinner.isEmpty()) {
             TournamentApiResponse<TournamentWinnerResponse> response = new TournamentApiResponse<>(
                     "error",
                     404,
@@ -130,18 +132,18 @@ public class TournamentController {
         List<TournamentWinner> footballTournamentWinner = tournamentService.getTopWinners("football");
         log.info("Received Tournament Winner List: {}", footballTournamentWinner);
 
-        List<TournamentWinner> tennisTournamentWinner = tournamentService.getTopWinners("tennis");
-        log.info("Received Tournament Winner List: {}", tennisTournamentWinner);
+        List<TournamentWinner> badmintonTournamentWinner = tournamentService.getTopWinners("badminton");
+        log.info("Received Tournament Winner List: {}", badmintonTournamentWinner);
 
-        List<TournamentWinner> hockeyTournamentWinner = tournamentService.getTopWinners("hockey");
-        log.info("Received Tournament Winner List: {}", hockeyTournamentWinner);
+        List<TournamentWinner> swimmingTournamentWinner = tournamentService.getTopWinners("swimming");
+        log.info("Received Tournament Winner List: {}", swimmingTournamentWinner);
 
-        List<TournamentWinner> volleyballTournamentWinner = tournamentService.getTopWinners("volleyball");
-        log.info("Received Tournament Winner List: {}", volleyballTournamentWinner);
+        List<TournamentWinner> kabaddiTournamentWinner = tournamentService.getTopWinners("kabaddi");
+        log.info("Received Tournament Winner List: {}", kabaddiTournamentWinner);
 
-        TournamentWinnerResponse sportNameWinnerResponse = new TournamentWinnerResponse(cricketTournamentWinner, footballTournamentWinner, tennisTournamentWinner, hockeyTournamentWinner, volleyballTournamentWinner);
+        TournamentWinnerResponse sportNameWinnerResponse = new TournamentWinnerResponse(cricketTournamentWinner, footballTournamentWinner, badmintonTournamentWinner, swimmingTournamentWinner, kabaddiTournamentWinner);
 
-        if(cricketTournamentWinner.isEmpty() && footballTournamentWinner.isEmpty() && tennisTournamentWinner.isEmpty() && hockeyTournamentWinner.isEmpty() && volleyballTournamentWinner.isEmpty()) {
+        if(cricketTournamentWinner.isEmpty() && footballTournamentWinner.isEmpty() && badmintonTournamentWinner.isEmpty() && swimmingTournamentWinner.isEmpty() && kabaddiTournamentWinner.isEmpty()) {
             TournamentApiResponse<TournamentWinnerResponse> response = new TournamentApiResponse<>(
                     "error",
                     404,
@@ -161,6 +163,63 @@ public class TournamentController {
         return ResponseEntity.status(200).body(response);
     }
 
+    //GET All Winner By Gender
+    @GetMapping("/all-gender")
+    public ResponseEntity<TournamentApiResponse<TournamentGenderResponse>> getAllWinnerBasedOnGender(){
+        log.info("Fetching GET tournamentWinner Based on gender: MALE and FEMALE");
+
+        List<TournamentWinner> maleWinner = tournamentService.getTournamentWinnersByGender("male");
+        List<TournamentWinner> femaleWinner = tournamentService.getTournamentWinnersByGender("female");
+
+        TournamentGenderResponse genderResponse = new TournamentGenderResponse(maleWinner,femaleWinner);
+
+        log.info("Fetched List: {}",genderResponse);
+
+        if(maleWinner.isEmpty() && femaleWinner.isEmpty()){
+            TournamentApiResponse<TournamentGenderResponse> response = new TournamentApiResponse<>(
+                    "error",
+                    404,
+                    "No Winner Founds",
+                    null
+            );
+            log.info("Response - Request for FETCH getAllWinnerByGender NOT FOUND: {}",response);
+            return ResponseEntity.status(404).body(response);
+        }
+        TournamentApiResponse<TournamentGenderResponse> response = new TournamentApiResponse<>(
+                "success",
+                200,
+                "Details found",
+                genderResponse
+        );
+        log.info("Response - Request for FETCH getAllWinnerByGender FOUND: {}",response);
+        return ResponseEntity.status(200).body(response);
+    }
+
+    //Get Winner Based on Gender
+    @GetMapping("/gender/{gender}")
+    public ResponseEntity<TournamentApiResponse<List<TournamentWinner>>> getWinnerByGender(@PathVariable String gender){
+        log.info("Fetching GET tournamentWinner Based on gender: {}", gender);
+        List<TournamentWinner> tournamentWinners = tournamentService.getTournamentWinnersByGender(gender);
+        log.info("List Received Based on Gender List: {}",tournamentWinners);
+
+        if (tournamentWinners.isEmpty()){
+            TournamentApiResponse<List<TournamentWinner>> response = new TournamentApiResponse<>(
+                    "Error",
+                    404,
+                    "TournamentWinner Not Found",
+                    null
+            );
+            log.info("Response - GET tournamentWinner Based on Gender: {}", gender);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+        TournamentApiResponse<List<TournamentWinner>> response = new TournamentApiResponse<>(
+                "Success",
+                200,
+                "Detail Found Based on Gender",
+                tournamentWinners
+        );
+        return ResponseEntity.status(HttpStatus.FOUND).body(response);
+    }
 
     // Update
     @PutMapping("/{id}")
@@ -173,11 +232,11 @@ public class TournamentController {
             TournamentApiResponse<TournamentWinner> response = new TournamentApiResponse<>(
                     "Error",
                     404,
-                    "Tournament Not Found",
+                    "TournamentWinner Not Found",
                     null
             );
             log.info("Response - PUT Request to UpdateTournament- ID DOES NOT EXIST TournamentId: {}",tournamentId);
-            return ResponseEntity.ok(response);
+            return ResponseEntity.status(404).build();
         }
         TournamentWinner updatedTournamentWinner = tournamentService.updateStudent(tournamentId, tournamentWinner);
         log.info("Received a updatedTournament: {}", updatedTournamentWinner);
