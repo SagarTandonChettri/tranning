@@ -1,6 +1,6 @@
 package com.tournamentApplication.tournamentApplication.service;
 
-import com.tournamentApplication.tournamentApplication.entity.Tournament;
+import com.tournamentApplication.tournamentApplication.entity.TournamentWinner;
 import com.tournamentApplication.tournamentApplication.repository.TournamentRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,48 +17,48 @@ public class TournamentServiceImpl implements TournamentService{
     private TournamentRepository tournamentRepository;
 
     @Override
-    public Tournament saveStudent(Tournament tournament) {
-        log.info("Received Request for saveTournament: {}",tournament);
-        return tournamentRepository.save(tournament);
+    public TournamentWinner saveStudent(TournamentWinner tournamentWinner) {
+        log.info("Received Request for saveTournament: {}", tournamentWinner);
+        return tournamentRepository.save(tournamentWinner);
     }
 
     @Override
-    public List<Tournament> fetchStudentList() {
+    public List<TournamentWinner> fetchStudentList() {
         log.info("Received Fetching Request getTournametList");
-        List<Tournament> tournaments = tournamentRepository.findAll();
-        if (tournaments.isEmpty()) {
+        List<TournamentWinner> tournamentWinners = tournamentRepository.findAll();
+        if (tournamentWinners.isEmpty()) {
             log.warn("No Tournament found");
         } else {
-            log.info("Successfully retrieved Tournament List: {}",tournaments);
+            log.info("Successfully retrieved Tournament List: {}", tournamentWinners);
         }
-        return tournaments;
+        return tournamentWinners;
     }
 
     @Override
-    public Tournament getTournamentById(Long tournamentId) {
+    public TournamentWinner getTournamentById(Long tournamentId) {
         log.info("Received Request to GET tournament by tournamentId: {}",tournamentId);
-        Tournament tournament = tournamentRepository.findById(tournamentId).orElseThrow(()->{
+        TournamentWinner tournamentWinner = tournamentRepository.findById(tournamentId).orElseThrow(()->{
             log.info("Detail NOT FOUND TournamentId: {}",tournamentId);
             return new RuntimeException("Tournament NOT FOUND ID: " + tournamentId);
         });
-        log.info("Successfully GET Tournament - tournament: {}",tournament);
-        return tournamentRepository.save(tournament);
+        log.info("Successfully GET Tournament - tournament: {}", tournamentWinner);
+        return tournamentRepository.save(tournamentWinner);
     }
 
     @Override
-    public List<Tournament> getTournamentBySportName(String sportName) {
+    public List<TournamentWinner> getTournamentBySportName(String sportName) {
         log.info("Received Fetching Request getTournament by sportName: {}", sportName);
-        List<Tournament> tournaments = tournamentRepository.findBySportName(sportName);
-        if (tournaments.isEmpty()) {
+        List<TournamentWinner> tournamentWinners = tournamentRepository.findBySportName(sportName);
+        if (tournamentWinners.isEmpty()) {
             log.warn("No sportName found with sportName: {}", sportName);
         } else {
-            log.info("Successfully retrieved: {} tournament, with sportName: {}", tournaments.size(), sportName);
+            log.info("Successfully retrieved: {} tournament, with sportName: {}", tournamentWinners.size(), sportName);
         }
-        return tournaments;
+        return tournamentWinners;
     }
     //fetch top 2 highest-scoring per score
     @Override
-    public List<Tournament> getTopWinners(String sportName) {
+    public List<TournamentWinner> getTopWinners(String sportName) {
         log.info("GET 2 most higher scorer");
         return tournamentRepository.findBySportName(sportName)
                 .stream()
@@ -68,23 +68,30 @@ public class TournamentServiceImpl implements TournamentService{
     }
 
     @Override
-    public Tournament updateStudent(Long tournamentId, Tournament newTournament) {
-        log.info("Received Request to update tournament \n updateTournamentINFO[tournamentId: {},updatedTournament: {}], ",tournamentId,newTournament);
+    public List<TournamentWinner> getWinnerByGender(String gender) {
+        log.info("Received Request to get Student by Gender");
 
-        Tournament oldTournament = tournamentRepository.findById(tournamentId)
+        return List.of();
+    }
+
+    @Override
+    public TournamentWinner updateStudent(Long tournamentId, TournamentWinner newTournamentWinner) {
+        log.info("Received Request to update tournament \n updateTournamentINFO[tournamentId: {},updatedTournament: {}], ",tournamentId, newTournamentWinner);
+
+        TournamentWinner oldTournamentWinner = tournamentRepository.findById(tournamentId)
                 .orElseThrow(() -> {
                     log.info("tournamet not found with  TournamentId: {}",tournamentId);
                     return new RuntimeException("Tournament not found with ID: " + tournamentId);
                 });
 
-        oldTournament.setStudentName(newTournament.getStudentName());
-        oldTournament.setAge(newTournament.getAge());
-        oldTournament.setGender(newTournament.getGender());
-        oldTournament.setSportName(newTournament.getSportName());
-        oldTournament.setSportScore(newTournament.getSportScore());
+        oldTournamentWinner.setStudentName(newTournamentWinner.getStudentName());
+        oldTournamentWinner.setAge(newTournamentWinner.getAge());
+        oldTournamentWinner.setGender(newTournamentWinner.getGender());
+        oldTournamentWinner.setSportName(newTournamentWinner.getSportName());
+        oldTournamentWinner.setSportScore(newTournamentWinner.getSportScore());
 
-        log.info("Successfully Update Tournament - Detail: {}",newTournament);
-        return tournamentRepository.save(newTournament);
+        log.info("Successfully Update Tournament - Detail: {}", newTournamentWinner);
+        return tournamentRepository.save(newTournamentWinner);
     }
 
     @Override
@@ -115,7 +122,7 @@ public class TournamentServiceImpl implements TournamentService{
     }
 
     @Override
-    public List<Tournament> getTournamentsByGender(String gender) {
+    public List<TournamentWinner> getTournamentsByGender(String gender) {
         return tournamentRepository.findByGender(gender);
     }
 }

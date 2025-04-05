@@ -1,6 +1,6 @@
 package com.tournamentApplication.tournamentApplication.controller;
 
-import com.tournamentApplication.tournamentApplication.entity.Tournament;
+import com.tournamentApplication.tournamentApplication.entity.TournamentWinner;
 import com.tournamentApplication.tournamentApplication.service.TournamentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,15 +23,15 @@ public class TournamentApiController {
     private TournamentService tournamentService;
 
     @GetMapping("/by-gender/{gender}")
-    public ResponseEntity<List<Tournament>> getTournamentsByGender(@PathVariable String gender) {
+    public ResponseEntity<List<TournamentWinner>> getTournamentsByGender(@PathVariable String gender) {
         log.info("Fetching tournaments for gender: {}", gender);
-        List<Tournament> tournaments = tournamentService.getTournamentsByGender(gender);
+        List<TournamentWinner> tournamentWinners = tournamentService.getTournamentsByGender(gender);
 
-        if (tournaments.isEmpty()) {
+        if (tournamentWinners.isEmpty()) {
             log.warn("No tournaments found for gender: {}", gender);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.emptyList());
         }
-        log.info("Returning {} tournaments for gender: {}", tournaments.size(), gender);
-        return ResponseEntity.ok(tournaments);
+        log.info("Returning {} tournaments for gender: {}", tournamentWinners.size(), gender);
+        return ResponseEntity.ok(tournamentWinners);
     }
 }

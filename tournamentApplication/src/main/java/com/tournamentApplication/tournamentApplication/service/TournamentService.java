@@ -1,26 +1,28 @@
 package com.tournamentApplication.tournamentApplication.service;
 
-import com.tournamentApplication.tournamentApplication.entity.Tournament;
+import com.tournamentApplication.tournamentApplication.entity.TournamentWinner;
 
 import java.util.List;
 
 public interface TournamentService {
 
     //Save Operation
-    Tournament saveStudent(Tournament tournament);
+    TournamentWinner saveStudent(TournamentWinner tournamentWinner);
 
     //Read Operation
     //ALL
-    List<Tournament> fetchStudentList();
+    List<TournamentWinner> fetchStudentList();
     //ID
-    Tournament getTournamentById(Long tournamentId);
+    TournamentWinner getTournamentById(Long tournamentId);
     //SPORTS
-    List<Tournament> getTournamentBySportName(String sportName);
+    List<TournamentWinner> getTournamentBySportName(String sportName);
     //Top Winner
-    List<Tournament> getTopWinners(String sportName);
+    List<TournamentWinner> getTopWinners(String sportName);
+    //All list Based on Gender
+    List<TournamentWinner> getWinnerByGender(String gender);
 
     //Update Operation
-    Tournament updateStudent(Long tournamentId,Tournament tournament);
+    TournamentWinner updateStudent(Long tournamentId, TournamentWinner tournamentWinner);
 
     ///Delete operation
     boolean deleteTournamentById(Long studentId);
@@ -31,5 +33,5 @@ public interface TournamentService {
     //exist by ID
     boolean existById(Long tournamentId);
 
-    List<Tournament> getTournamentsByGender(String gender);
+    List<TournamentWinner> getTournamentsByGender(String gender);
 }

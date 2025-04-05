@@ -2,15 +2,13 @@ package com.tournamentApplication.tournamentApplication.controller;
 
 import com.tournamentApplication.tournamentApplication.dto.TournamentApiResponse;
 import com.tournamentApplication.tournamentApplication.dto.TournamentWinnerResponse;
-import com.tournamentApplication.tournamentApplication.entity.Tournament;
+import com.tournamentApplication.tournamentApplication.entity.TournamentWinner;
 import com.tournamentApplication.tournamentApplication.service.TournamentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
 import java.util.List;
 
 @Slf4j
@@ -22,15 +20,15 @@ public class TournamentController {
 
     //Post
     @PostMapping
-    public ResponseEntity<TournamentApiResponse<Tournament>> saveStudent(@RequestBody Tournament tournament){
-        log.info("Received POST request to save tournament:{}",tournament);
-        Tournament savedTournament = tournamentService.saveStudent(tournament);
-        log.info("Saved Complete savedTournament: {}",savedTournament);
-        TournamentApiResponse<Tournament> response = new TournamentApiResponse<>(
+    public ResponseEntity<TournamentApiResponse<TournamentWinner>> saveStudent(@RequestBody TournamentWinner tournamentWinner){
+        log.info("Received POST request to save tournament:{}", tournamentWinner);
+        TournamentWinner savedTournamentWinner = tournamentService.saveStudent(tournamentWinner);
+        log.info("Saved Complete savedTournament: {}", savedTournamentWinner);
+        TournamentApiResponse<TournamentWinner> response = new TournamentApiResponse<>(
                 "success",
                 201,
                 "Tournament created successfully",
-                savedTournament
+                savedTournamentWinner
         );
         log.info("Response - POST request to save Tournament: {}",response);
         return  ResponseEntity.status(201).body(response);
@@ -38,15 +36,15 @@ public class TournamentController {
 
     //Get
     @GetMapping
-    public ResponseEntity<TournamentApiResponse<List<Tournament>>> getAllTournament(){
+    public ResponseEntity<TournamentApiResponse<List<TournamentWinner>>> getAllTournament(){
         log.info("Received GET Request to getAllTournament");
-        List<Tournament> tournaments = tournamentService.fetchStudentList();
+        List<TournamentWinner> tournamentWinners = tournamentService.fetchStudentList();
         log.info("Received All tournament");
-        TournamentApiResponse<List<Tournament>> response = new TournamentApiResponse<>(
+        TournamentApiResponse<List<TournamentWinner>> response = new TournamentApiResponse<>(
                 "success",
                 201,
                 "Fetch complete",
-                tournaments
+                tournamentWinners
         );
         log.info("Response - GET Request to getAllTournament:{}",response);
         return ResponseEntity.ok(response);
@@ -54,11 +52,11 @@ public class TournamentController {
 
     //Get By ID
     @GetMapping("/{id}")
-    public ResponseEntity<TournamentApiResponse<Tournament>> getTournamentById(@PathVariable("id") Long tournamentId){
+    public ResponseEntity<TournamentApiResponse<TournamentWinner>> getTournamentById(@PathVariable("id") Long tournamentId){
         log.info("Received GET Request to getTournament by TournamentID:");
         boolean isExist = tournamentService.existById(tournamentId);
 
-        TournamentApiResponse<Tournament> response;
+        TournamentApiResponse<TournamentWinner> response;
         if (!isExist){
             log.info("Tournament does NOT EXIST TournamentId: {}",tournamentId);
             response = new TournamentApiResponse<>(
@@ -70,13 +68,13 @@ public class TournamentController {
             log.info("Response - GET Request to getTournament by TournamentID: {}",tournamentId);
             return ResponseEntity.ok(response);
         }
-        Tournament tournament = tournamentService.getTournamentById(tournamentId);
-        log.info("Received a Tournament Detail TournamentDetail: {}, TournamentId: {}",tournament,tournamentId);
+        TournamentWinner tournamentWinner = tournamentService.getTournamentById(tournamentId);
+        log.info("Received a Tournament Detail TournamentDetail: {}, TournamentId: {}", tournamentWinner,tournamentId);
         response = new TournamentApiResponse<>(
                 "Success",
                 200,
                 "Fetch Succesful",
-                tournament
+                tournamentWinner
         );
         log.info("Response - GET Request to getTournamentById: {}",response);
         return ResponseEntity.ok(response);
@@ -87,21 +85,21 @@ public class TournamentController {
     public ResponseEntity<TournamentApiResponse<TournamentWinnerResponse>> getAllTournamentBySportName(){
         log.info("Received a Request to FETCH data getAllTournamentBySportName");
 
-        List<Tournament> cricketTournament = tournamentService.getTournamentBySportName("cricket");
-        List<Tournament> footballTournament = tournamentService.getTournamentBySportName("football");
-        List<Tournament> tennisTournament = tournamentService.getTournamentBySportName("tennis");
-        List<Tournament> hockeyTournament = tournamentService.getTournamentBySportName("hockey");
-        List<Tournament> volleyballTournament = tournamentService.getTournamentBySportName("volleyball");
+        List<TournamentWinner> cricketTournamentWinner = tournamentService.getTournamentBySportName("cricket");
+        List<TournamentWinner> footballTournamentWinner = tournamentService.getTournamentBySportName("football");
+        List<TournamentWinner> tennisTournamentWinner = tournamentService.getTournamentBySportName("tennis");
+        List<TournamentWinner> hockeyTournamentWinner = tournamentService.getTournamentBySportName("hockey");
+        List<TournamentWinner> volleyballTournamentWinner = tournamentService.getTournamentBySportName("volleyball");
 
-        log.info("Received Tournament List: {}",cricketTournament);
-        log.info("Received Tournament List: {}",footballTournament);
-        log.info("Received Tournament List: {}",tennisTournament);
-        log.info("Received Tournament List: {}",hockeyTournament);
-        log.info("Received Tournament List: {}",volleyballTournament);
+        log.info("Received Tournament List: {}", cricketTournamentWinner);
+        log.info("Received Tournament List: {}", footballTournamentWinner);
+        log.info("Received Tournament List: {}", tennisTournamentWinner);
+        log.info("Received Tournament List: {}", hockeyTournamentWinner);
+        log.info("Received Tournament List: {}", volleyballTournamentWinner);
 
-        TournamentWinnerResponse sportNameWinnerResponse = new TournamentWinnerResponse(cricketTournament,footballTournament,tennisTournament,hockeyTournament,volleyballTournament);
+        TournamentWinnerResponse sportNameWinnerResponse = new TournamentWinnerResponse(cricketTournamentWinner, footballTournamentWinner, tennisTournamentWinner, hockeyTournamentWinner, volleyballTournamentWinner);
 
-        if(cricketTournament.isEmpty() && footballTournament.isEmpty() && tennisTournament.isEmpty() && hockeyTournament.isEmpty() && volleyballTournament.isEmpty()) {
+        if(cricketTournamentWinner.isEmpty() && footballTournamentWinner.isEmpty() && tennisTournamentWinner.isEmpty() && hockeyTournamentWinner.isEmpty() && volleyballTournamentWinner.isEmpty()) {
             TournamentApiResponse<TournamentWinnerResponse> response = new TournamentApiResponse<>(
                     "error",
                     404,
@@ -126,24 +124,24 @@ public class TournamentController {
     public ResponseEntity<TournamentApiResponse<TournamentWinnerResponse>> getAllWinner(){
         log.info("Received a Request to FETCH Winner data Based on sportName");
 
-        List<Tournament> cricketTournament = tournamentService.getTopWinners("cricket");
-        log.info("Received Tournament Winner List: {}",cricketTournament);
+        List<TournamentWinner> cricketTournamentWinner = tournamentService.getTopWinners("cricket");
+        log.info("Received Tournament Winner List: {}", cricketTournamentWinner);
 
-        List<Tournament> footballTournament = tournamentService.getTopWinners("football");
-        log.info("Received Tournament Winner List: {}",footballTournament);
+        List<TournamentWinner> footballTournamentWinner = tournamentService.getTopWinners("football");
+        log.info("Received Tournament Winner List: {}", footballTournamentWinner);
 
-        List<Tournament> tennisTournament = tournamentService.getTopWinners("tennis");
-        log.info("Received Tournament Winner List: {}",tennisTournament);
+        List<TournamentWinner> tennisTournamentWinner = tournamentService.getTopWinners("tennis");
+        log.info("Received Tournament Winner List: {}", tennisTournamentWinner);
 
-        List<Tournament> hockeyTournament = tournamentService.getTopWinners("hockey");
-        log.info("Received Tournament Winner List: {}",hockeyTournament);
+        List<TournamentWinner> hockeyTournamentWinner = tournamentService.getTopWinners("hockey");
+        log.info("Received Tournament Winner List: {}", hockeyTournamentWinner);
 
-        List<Tournament> volleyballTournament = tournamentService.getTopWinners("volleyball");
-        log.info("Received Tournament Winner List: {}",volleyballTournament);
+        List<TournamentWinner> volleyballTournamentWinner = tournamentService.getTopWinners("volleyball");
+        log.info("Received Tournament Winner List: {}", volleyballTournamentWinner);
 
-        TournamentWinnerResponse sportNameWinnerResponse = new TournamentWinnerResponse(cricketTournament,footballTournament,tennisTournament,hockeyTournament,volleyballTournament);
+        TournamentWinnerResponse sportNameWinnerResponse = new TournamentWinnerResponse(cricketTournamentWinner, footballTournamentWinner, tennisTournamentWinner, hockeyTournamentWinner, volleyballTournamentWinner);
 
-        if(cricketTournament.isEmpty() && footballTournament.isEmpty() && tennisTournament.isEmpty() && hockeyTournament.isEmpty() && volleyballTournament.isEmpty()) {
+        if(cricketTournamentWinner.isEmpty() && footballTournamentWinner.isEmpty() && tennisTournamentWinner.isEmpty() && hockeyTournamentWinner.isEmpty() && volleyballTournamentWinner.isEmpty()) {
             TournamentApiResponse<TournamentWinnerResponse> response = new TournamentApiResponse<>(
                     "error",
                     404,
@@ -166,13 +164,13 @@ public class TournamentController {
 
     // Update
     @PutMapping("/{id}")
-    public ResponseEntity<TournamentApiResponse<Tournament>> updateTournament(@PathVariable("id") Long tournamentId, @RequestBody Tournament tournament) {
-        log.info("Received PUT Request to updateTournament: {}",tournament);
+    public ResponseEntity<TournamentApiResponse<TournamentWinner>> updateTournament(@PathVariable("id") Long tournamentId, @RequestBody TournamentWinner tournamentWinner) {
+        log.info("Received PUT Request to updateTournament: {}", tournamentWinner);
         log.info("Check Id EXIST");
         boolean isExist  = tournamentService.existById(tournamentId);
         if (!isExist){
             log.info("Tournament does Not exist TournamentId: {}",tournamentId);
-            TournamentApiResponse<Tournament> response = new TournamentApiResponse<>(
+            TournamentApiResponse<TournamentWinner> response = new TournamentApiResponse<>(
                     "Error",
                     404,
                     "Tournament Not Found",
@@ -181,13 +179,13 @@ public class TournamentController {
             log.info("Response - PUT Request to UpdateTournament- ID DOES NOT EXIST TournamentId: {}",tournamentId);
             return ResponseEntity.ok(response);
         }
-        Tournament updatedTournament = tournamentService.updateStudent(tournamentId,tournament);
-        log.info("Received a updatedTournament: {}",updatedTournament);
-        TournamentApiResponse<Tournament> response = new TournamentApiResponse<>(
+        TournamentWinner updatedTournamentWinner = tournamentService.updateStudent(tournamentId, tournamentWinner);
+        log.info("Received a updatedTournament: {}", updatedTournamentWinner);
+        TournamentApiResponse<TournamentWinner> response = new TournamentApiResponse<>(
                 "success",
                 200,
                 "Tournamentd updated sucessfully",
-                updatedTournament
+                updatedTournamentWinner
         );
         log.info("Response - PUT Request to updatedTournament: {}",response);
         return ResponseEntity.ok(response);
