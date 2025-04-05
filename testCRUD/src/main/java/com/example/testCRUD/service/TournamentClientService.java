@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface TournamentClientService {
     List<TournamentDto> fetchTournamentByGender(String gender);
+    List<TournamentDto> getAllWinner ();
+    TournamentDto getWinnerById(Long winnerId);
 }

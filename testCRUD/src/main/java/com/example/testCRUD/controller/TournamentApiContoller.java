@@ -36,4 +36,48 @@ public class TournamentApiContoller {
                 "Tournaments found for gender: " + gender, tournaments));
     }
 
+    @GetMapping("/all")
+    public ResponseEntity<TournamentDtoResponse<List<TournamentDto>>> getTournamentWinnerAll() {
+        List<TournamentDto> tournaments = tournamentClientService.getAllWinner();
+
+        if (tournaments.isEmpty()) {
+            return ResponseEntity.status(404).body(new TournamentDtoResponse<>(
+                    "error",
+                    404,
+                    "No tournaments found",
+                    null));
+        }
+
+        return ResponseEntity.ok(new TournamentDtoResponse<>(
+                "success",
+                200,
+                "Tournaments fetched successfully",
+                tournaments));
+    }
+
+    @GetMapping("/id/{id}")
+    public ResponseEntity<TournamentDtoResponse<TournamentDto>> getTournamentWinnerById(@PathVariable("id") Long winnerId) {
+        log.info("Received request for getTournamentWinnerById with ID: {}", winnerId);
+
+        TournamentDto tournament = tournamentClientService.getWinnerById(winnerId);
+
+        if (tournament == null) {
+            return ResponseEntity.status(404).body(new TournamentDtoResponse<>(
+                    "error",
+                    404,
+                    "Tournament not found for ID: " + winnerId,
+                    null
+            ));
+        }
+
+        return ResponseEntity.ok(new TournamentDtoResponse<>(
+                "success",
+                200,
+                "Tournament found",
+                tournament
+        ));
+    }
+
+
+
 }
