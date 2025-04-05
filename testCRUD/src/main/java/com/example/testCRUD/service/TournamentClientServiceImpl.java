@@ -21,11 +21,11 @@ public class TournamentClientServiceImpl implements TournamentClientService {
     @Autowired
     private RestTemplate restTemplate;
 
-    private static final String TOURNAMENT_API_GENDER_URL = "http://localhost:8080/api/tournament/gender/";
-    private static final String TOURNAMENT_API_ALL_URL = "http://localhost:8080/api/tournament/";
+//    private static final String TOURNAMENT_API_GENDER_URL = "http://localhost:8080/api/tournament/gender/";
+    private static final String TOURNAMENT_API_URL = "http://localhost:8080/api/tournament/";
 
     public List<TournamentDto>fetchTournamentByGender(String gender){
-        String url = TOURNAMENT_API_GENDER_URL + gender;
+        String url = TOURNAMENT_API_URL +"gender/" + gender;
         log.info("Fetching tournaments from URL: {}", url);
         try {
             ResponseEntity<List<TournamentDto>> response =
@@ -46,7 +46,7 @@ public class TournamentClientServiceImpl implements TournamentClientService {
 
     @Override
         public List<TournamentDto> getAllWinner() {
-        String url = TOURNAMENT_API_ALL_URL + "all";
+        String url = TOURNAMENT_API_URL + "all";
         log.info("Fetching tournamentWinner from URL: {}", url);
         try {
             ResponseEntity<List<TournamentDto>> response = restTemplate.exchange(url, HttpMethod.GET, null, new ParameterizedTypeReference<>(){});
@@ -66,7 +66,7 @@ public class TournamentClientServiceImpl implements TournamentClientService {
 
     @Override
     public TournamentDto getWinnerById(Long id) {
-        String url = TOURNAMENT_API_ALL_URL + "id/" + id;
+        String url = TOURNAMENT_API_URL + "id/" + id;
         log.info("Fetching tournamentWinner by ID from URL: {}", url);
         try {
             ResponseEntity<TournamentDto> response = restTemplate.exchange(
