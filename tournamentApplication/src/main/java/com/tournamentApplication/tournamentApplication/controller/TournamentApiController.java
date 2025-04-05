@@ -1,5 +1,6 @@
 package com.tournamentApplication.tournamentApplication.controller;
 
+import com.tournamentApplication.tournamentApplication.dto.TournamentApiResponse;
 import com.tournamentApplication.tournamentApplication.entity.TournamentWinner;
 import com.tournamentApplication.tournamentApplication.service.TournamentService;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +23,8 @@ public class TournamentApiController {
     @Autowired
     private TournamentService tournamentService;
 
-    @GetMapping("/by-gender/{gender}")
+    //API - GET DATA BY GENDER
+    @GetMapping("/gender/{gender}")
     public ResponseEntity<List<TournamentWinner>> getTournamentsByGender(@PathVariable String gender) {
         log.info("Fetching tournaments for gender: {}", gender);
         List<TournamentWinner> tournamentWinners = tournamentService.getTournamentWinnersByGender(gender);
@@ -34,4 +36,47 @@ public class TournamentApiController {
         log.info("Returning {} tournaments for gender: {}", tournamentWinners.size(), gender);
         return ResponseEntity.ok(tournamentWinners);
     }
+
+    //API - GET DATA BY All
+    @GetMapping("/all")
+    public ResponseEntity<List<TournamentWinner>> getAllTournamentWinners(){
+        log.info("Received GET REQUEST getTournamentWinners");
+        List<TournamentWinner> tournamentWinners = tournamentService.fetchStudentList();
+        log.info("Received fetch list: {}",tournamentWinners);
+        if(tournamentWinners.isEmpty()){
+            log.info("List is Empty");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.emptyList());
+        }
+        log.info("total Entry {}, tournamentWinner: {}",tournamentWinners.size(),tournamentWinners);
+        return ResponseEntity.ok(tournamentWinners);
+    }
+
+    @GetMapping("/id/{id}")
+    public ResponseEntity<TournamentApiResponse<TournamentWinner>> getTournamentById(@PathVariable("id") Long winnerId){
+        log.info("Received GET REQUEST get TournamentWinner by ID: {}",winnerId);
+        boolean isExist  = tournamentService.existById(winnerId);
+        log.info("ID exist: {}",isExist);
+        if(!isExist){
+            log.info("Tournament does Not exist winnerId: {}",winnerId);
+            TournamentApiResponse<TournamentWinner> response = new TournamentApiResponse<>(
+                    "Error",
+                    404,
+                    "Tournament Winner Not Found",
+                    null
+            );
+            log.info("Response - PUT Request to UpdateTournament- ID DOES NOT EXIST winnerId: {}",winnerId);
+            return ResponseEntity.status(404).body(response);
+        }
+        TournamentWinner tournamentWinnerById = tournamentService.getTournamentById(winnerId);
+        log.info("Received Entry-ID: {},ENTRY: {}", winnerId,tournamentWinnerById);
+        TournamentApiResponse<TournamentWinner> response = new TournamentApiResponse<>(
+                "success",
+                200,
+                "Tournamentd FOUND Sucessfully",
+                tournamentWinnerById
+        );
+        log.info("Response - PUT Request to updatedTournament: {}",response);
+        return ResponseEntity.status(200).body(response);
+    }
+
 }

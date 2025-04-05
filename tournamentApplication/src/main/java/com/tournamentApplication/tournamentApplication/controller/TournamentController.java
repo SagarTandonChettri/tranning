@@ -165,7 +165,7 @@ public class TournamentController {
 
     //GET All Winner By Gender
     @GetMapping("/all-gender")
-    public ResponseEntity<TournamentApiResponse<TournamentGenderResponse>> getAllWinnerBasedOnGender(){
+    public ResponseEntity<TournamentApiResponse<TournamentGenderResponse>> getAllWinnerByGender(){
         log.info("Fetching GET tournamentWinner Based on gender: MALE and FEMALE");
 
         List<TournamentWinner> maleWinner = tournamentService.getTournamentWinnersByGender("male");
