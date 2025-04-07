@@ -18,12 +18,13 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("/api/tournament")
-public class TournamentApiController {
+public class TournamentExposureController {
 
     @Autowired
     private TournamentService tournamentService;
 
-    //API - GET DATA BY GENDER
+    //Receiving from another api CALLING
+    //API - GET DATA BY GENDER Sending
     @GetMapping("/gender/{gender}")
     public ResponseEntity<List<TournamentWinner>> getTournamentsByGender(@PathVariable String gender) {
         log.info("Fetching tournaments for gender: {}", gender);

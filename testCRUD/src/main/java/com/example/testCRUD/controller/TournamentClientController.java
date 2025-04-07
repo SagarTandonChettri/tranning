@@ -13,7 +13,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("/api/tournament")
-public class TournamentApiContoller {
+public class TournamentClientController {
 
     @Autowired
     private TournamentClientServiceImpl tournamentClientService;
@@ -39,7 +39,6 @@ public class TournamentApiContoller {
     @GetMapping("/all")
     public ResponseEntity<TournamentDtoResponse<List<TournamentDto>>> getTournamentWinnerAll() {
         List<TournamentDto> tournaments = tournamentClientService.getAllWinner();
-
         if (tournaments.isEmpty()) {
             return ResponseEntity.status(404).body(new TournamentDtoResponse<>(
                     "error",

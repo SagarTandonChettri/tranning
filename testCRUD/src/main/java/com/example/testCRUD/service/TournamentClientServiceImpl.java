@@ -46,7 +46,7 @@ public class TournamentClientServiceImpl implements TournamentClientService {
     }
 
     @Override
-        public List<TournamentDto> getAllWinner() {
+    public List<TournamentDto> getAllWinner() {
         String url = TOURNAMENT_API_URL + "all";
         log.info("Fetching tournamentWinner from URL: {}", url);
         try {
