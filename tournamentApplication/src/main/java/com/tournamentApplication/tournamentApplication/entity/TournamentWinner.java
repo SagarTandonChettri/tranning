@@ -19,7 +19,7 @@ public class TournamentWinner {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String StudentName;
+    private String studentName;
     private int age;
     private String gender;
     private String sportName;

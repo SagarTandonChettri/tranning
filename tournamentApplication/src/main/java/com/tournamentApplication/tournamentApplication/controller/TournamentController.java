@@ -301,7 +301,4 @@ public class TournamentController {
         }
         return ResponseEntity.status(response.getStatusCode()).body(response);
     }
-
-    //
-
 }

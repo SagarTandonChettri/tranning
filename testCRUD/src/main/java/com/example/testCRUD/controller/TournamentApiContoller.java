@@ -18,7 +18,7 @@ public class TournamentApiContoller {
     @Autowired
     private TournamentClientServiceImpl tournamentClientService;
 
-    @GetMapping("/by-gender/{gender}")
+    @GetMapping("/gender/{gender}")
     public ResponseEntity<TournamentDtoResponse<List<TournamentDto>>> getTournamentsByGender(@PathVariable String gender) {
         List<TournamentDto> tournaments = tournamentClientService.fetchTournamentByGender(gender);
 
@@ -60,7 +60,7 @@ public class TournamentApiContoller {
         log.info("Received request for getTournamentWinnerById with ID: {}", winnerId);
 
         TournamentDto tournament = tournamentClientService.getWinnerById(winnerId);
-
+        log.info("Detail Received: {}",tournament);
         if (tournament == null) {
             return ResponseEntity.status(404).body(new TournamentDtoResponse<>(
                     "error",
@@ -69,15 +69,12 @@ public class TournamentApiContoller {
                     null
             ));
         }
-
-        return ResponseEntity.ok(new TournamentDtoResponse<>(
+        return ResponseEntity.status(200).body(new TournamentDtoResponse<>(
                 "success",
                 200,
                 "Tournament found",
                 tournament
         ));
     }
-
-
 
 }

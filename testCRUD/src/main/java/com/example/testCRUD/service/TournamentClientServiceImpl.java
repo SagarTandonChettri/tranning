@@ -1,6 +1,7 @@
 package com.example.testCRUD.service;
 
 import com.example.testCRUD.dto.TournamentDto;
+import com.example.testCRUD.dto.TournamentDtoResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
@@ -69,15 +70,17 @@ public class TournamentClientServiceImpl implements TournamentClientService {
         String url = TOURNAMENT_API_URL + "id/" + id;
         log.info("Fetching tournamentWinner by ID from URL: {}", url);
         try {
-            ResponseEntity<TournamentDto> response = restTemplate.exchange(
+            ResponseEntity<TournamentDtoResponse<TournamentDto>> response = restTemplate.exchange(
                     url,
                     HttpMethod.GET,
                     null,
-                    new ParameterizedTypeReference<>() {}
+                    new ParameterizedTypeReference<TournamentDtoResponse<TournamentDto>>() {}
             );
+            log.info("Fetching tournamentWinner by ID from URL Response: {}",response);
 
             if (response.getStatusCode() == HttpStatus.OK && response.getBody() != null) {
-                return response.getBody();
+                log.info("response.getStatusCode() == HttpStatus.OK && response.getBody() != null Condition - Response: {}",response);
+                return response.getBody().getData();
             }
             return null;
         } catch (HttpClientErrorException e) {
