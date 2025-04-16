@@ -1,4 +1,8 @@
 package com.tournamentApplication.tournamentApplication.repository;
 
-public interface EmployeeRepository {
+
+import com.tournamentApplication.tournamentApplication.entity.Employee;
+import org.springframework.data.repository.reactive.ReactiveCrudRepository;
+
+public interface EmployeeRepository extends ReactiveCrudRepository<Employee,Long> {
 }
